@@ -7,34 +7,50 @@ package model;
  */
 public interface Board {
 
+	public int getSideSizeInSquares();
 
-    public int getSideSizeInSquares();
-
-    /**
-     * Return the tile at a given coordinate, or null if none exists there.
-     *
-     * @param lineNumber   must be >=1 and <= getSideSizeInSquares()
-     * @param columnNumber must be >=1 and <= getSideSizeInSquares()
-     * @return a tile or null if none
-     * @throws java.lang.IllegalArgumentException if parameters are out of board's bounds
-     */
-    Tile getTile(int lineNumber, int columnNumber);
+	/**
+	 * Return the tile at a given coordinate, or null if none exists there.
+	 *
+	 * @param lineNumber
+	 *            must be >=1 and <= getSideSizeInSquares()
+	 * @param columnNumber
+	 *            must be >=1 and <= getSideSizeInSquares()
+	 * @return a tile or null if none
+	 * @throws java.lang.IllegalArgumentException
+	 *             if parameters are out of board's bounds
+	 */
+	Tile getTile(int lineNumber, int columnNumber);
 
     public enum Direction {
         LEFT, RIGHT, TOP, BOTTOM;
     }
 
-    /**
-     * Apply the only game action: packing tiles
-     * @param direction  where to push the tiles
-     */
-    void packIntoDirection(Direction direction);
 
-    /**
-     * Validate the step effects
-     * NOTE: do we need this in the interface?
-     */
-    void commit();
+	/**
+	 * Apply the only game action: packing tiles
+	 * 
+	 * @param direction
+	 *            where to push the tiles
+	 */
+	void packIntoDirection(Direction direction);
 
+	/**
+	 * Validate the step effects NOTE: do we need this in the interface?
+	 */
+	void commit();
+
+	/**
+	 * Adds a tile randomly to the board, on an unused tile No effect if
+	 * isGameOver()
+	 */
+	public void addTileRandomly();
+
+	/**
+	 * @return Is the game over ?
+	 */
+	public boolean isGameOver();
+
+	public boolean wasModified();
 
 }

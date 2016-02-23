@@ -1,13 +1,20 @@
 package model;
 
+
+import java.util.Random;
 import java.util.logging.Logger;
+
+
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Created by plouzeau on 2014-10-09.
  */
 public class BoardImpl implements Board {
 
-
+	//public static final int CELL_SIZE = 128;
     private final int sideSizeInSquares;
     private Direction directionToPackInto;
 
@@ -226,4 +233,64 @@ public class BoardImpl implements Board {
             logger.info(outputBuffer.toString());
         }
     }
+    
+
+	/*
+	 * Indexs starts from 0 here, we work directly on the arrays
+	 */
+	@Override
+	public void addTileRandomly() {
+		Random rand = new Random();
+//		int i = 1;
+//		int j = 1;
+		int i = rand.nextInt(sideSizeInSquares);
+		int j = rand.nextInt(sideSizeInSquares);
+		if (currentBoard[i][j] != null) {
+			addTileRandomly(); // Search an other tile
+		} else {
+			currentBoard[i][j] = new TileImpl(2);
+		}
+	}
+	
+	public boolean isGameOver() {
+		// Verif Board plein
+		for (int i = 0; i < currentBoard.length; i++) {
+			for (int j = 0; j < currentBoard[i].length; j++) {
+				if (currentBoard[i][j] == null) {
+					return false;
+				}
+			}
+		}
+		
+		// Comparaison des lignes et colonnes
+		for (int i = 0; i < currentBoard.length; i++) {
+			for (int j = 0; j < currentBoard[i].length-1; j++) {				
+				// Comparaison en ligne
+				if (currentBoard[i][j].getRank() == currentBoard[i][j+1].getRank()) {
+					return false;
+				}
+				
+				// Comparaison en colonne
+				if (currentBoard[j][i].getRank() == currentBoard[j+1][i].getRank()) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	public boolean wasModified() {
+		for (int i = 0; i < currentBoard.length; i++) {
+			for (int j = 0; j < currentBoard[i].length; j++) {
+				if (currentBoard[i][j] != nextBoard[i][j]) {
+					return true;
+				}
+			}
+		}
+		// Reset nextBoard
+        nextBoard = new Tile[sideSizeInSquares][sideSizeInSquares];
+		return false;
+	}
+    
 }

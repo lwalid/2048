@@ -1,5 +1,6 @@
 package model;
 
+
 /**
  * Created by plouzeau on 2014-10-09.
  */
@@ -18,6 +19,7 @@ public class TileImpl implements Tile  {
 
     @Override
     public void incrementRank() {
-        this.rank++;
+        this.rank*=2;
     }
 }
+
